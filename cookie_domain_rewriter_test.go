@@ -1,4 +1,4 @@
-package cookie_domain_rewriter_test
+package cookie_domain_rewrite_test
 
 import (
 	"context"
