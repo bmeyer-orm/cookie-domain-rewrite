@@ -1,0 +1,45 @@
+# Static Traefik Configuration Example (TOML)
+# Save as traefik.toml
+
+[global]
+  checkNewVersion = true
+  sendAnonymousUsage = false
+
+# Entry Points
+[entryPoints.http]
+  address = ":80"
+  [entryPoints.http.http.redirections.entryPoint]
+    to = "https"
+    scheme = "https"
+
+[entryPoints.https]
+  address = ":443"
+
+# Enable Plugin System
+[experimental.localPlugins.cookie-domain-rewrite]
+  moduleName = "github.com/yourusername/cookie-domain-rewrite"
+
+# OR for production - install from GitHub
+# [experimental.plugins.cookie-domain-rewrite]
+#   moduleName = "github.com/yourusername/cookie-domain-rewrite"
+#   version = "v1.0.0"
+
+# Providers
+[providers.file]
+  filename = "/etc/traefik/dynamic-config.toml"
+  watch = true
+
+# API and Dashboard
+[api]
+  dashboard = true
+  insecure = true  # Only for local development!
+
+# Logging
+[log]
+  level = "INFO"
+
+# Access Logs
+[accessLog]
+  filePath = "/var/log/traefik/access.log"
+  format = "json"
+

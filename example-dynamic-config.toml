@@ -1,0 +1,36 @@
+# Dynamic Configuration Example (TOML)
+# Save as dynamic-config.toml
+
+# Cookie Domain Rewriter for local development
+[http.middlewares.local-cookie-rewriter.plugin.cookie-domain-rewrite]
+  matchDomains = ["*.oreilly.local", "api.oreilly.local"]
+  
+  [[http.middlewares.local-cookie-rewriter.plugin.cookie-domain-rewriter.replacements]]
+    from = "oreilly.review"
+    to = "oreilly.local"
+
+# Example router using the cookie rewriter
+[http.routers.api-local]
+  rule = "Host(`api.oreilly.local`)"
+  service = "api-service"
+  middlewares = ["local-cookie-rewriter"]
+  entryPoints = ["https"]
+  [http.routers.api-local.tls]
+
+# Example router for frontend
+[http.routers.web-local]
+  rule = "Host(`www.oreilly.local`)"
+  service = "web-service"
+  middlewares = ["local-cookie-rewriter"]
+  entryPoints = ["https"]
+  [http.routers.web-local.tls]
+
+# Services
+[http.services.api-service.loadBalancer]
+  [[http.services.api-service.loadBalancer.servers]]
+    url = "http://api-backend:8080"
+
+[http.services.web-service.loadBalancer]
+  [[http.services.web-service.loadBalancer.servers]]
+    url = "http://web-backend:3000"
+

@@ -1,0 +1,13 @@
+displayName: Cookie Domain Rewriter
+type: middleware
+
+import: github.com/bmeyer-orm/cookie-domain-rewrite
+
+summary: Rewrites cookie domain attributes in Set-Cookie response headers based on request origin
+
+testData:
+  MatchDomains:
+    - "*.local"
+  Replacements:
+    - From: "oreilly.review"
+      To: "oreilly.local"
